@@ -1,5 +1,6 @@
 package com.retheviper.choseikun.domain.service
 
+import com.retheviper.choseikun.domain.model.Availability
 import com.retheviper.choseikun.domain.model.Event
 import com.retheviper.choseikun.domain.model.EventId
 import com.retheviper.choseikun.domain.model.EventParticipants
@@ -37,7 +38,11 @@ class EventService(
         }
 
         (newCandidates - currentCandidates).let {
-            eventRepository.createCandidates(dto.id, it.toList())
+            val candidateIds = eventRepository.createCandidates(dto.id, it.toList())
+            val participants = participantRepository.findBy(dto.id)
+            participants.forEach { participant ->
+                participantRepository.create(dto.id, participant.copy(availabilities = participant.availabilities + candidateIds.associateWith { Availability.UNKNOWN }))
+            }
         }
 
         (currentCandidates intersect newCandidates).let {

@@ -44,13 +44,15 @@ class EventRepository {
         }
     }
 
-    fun createCandidates(eventId: EventId, candidates: List<EventCandidate>) {
-        EventCandidateTable.batchInsert(candidates) {
+    fun createCandidates(eventId: EventId, candidates: List<EventCandidate>): List<EventCandidateId> {
+        return EventCandidateTable.batchInsert(candidates) {
             this[EventCandidateTable.id] = it.id.value
             this[EventCandidateTable.eventId] = eventId.value
             this[EventCandidateTable.datetime] = it.datetime
             this[EventCandidateTable.created] = LocalDateTime.now()
             this[EventCandidateTable.updated] = LocalDateTime.now()
+        }.map {
+            EventCandidateId(it[EventCandidateTable.id].value)
         }
     }
 
