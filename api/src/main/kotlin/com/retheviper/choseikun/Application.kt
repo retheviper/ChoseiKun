@@ -3,6 +3,7 @@ package com.retheviper.choseikun
 import com.retheviper.choseikun.plugins.configureDI
 import com.retheviper.choseikun.plugins.configureDatabases
 import com.retheviper.choseikun.plugins.configureHTTP
+import com.retheviper.choseikun.plugins.configureRequestValidation
 import com.retheviper.choseikun.plugins.configureRouting
 import com.retheviper.choseikun.plugins.configureSerialization
 import io.ktor.server.application.Application
@@ -20,4 +21,5 @@ fun Application.module() {
     configureDatabases()
     configureDI()
     configureRouting()
+    configureRequestValidation()
 }
