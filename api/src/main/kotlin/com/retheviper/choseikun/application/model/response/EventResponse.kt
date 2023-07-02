@@ -53,30 +53,14 @@ data class ParticipantResponse(
     @Contextual
     val id: UUID,
     val name: String,
-    val availabilities: List<ParticipantAvailability>
+    val availabilities: Map<@Contextual UUID, Availability>
 ) {
     companion object {
         fun from(dto: Participant): ParticipantResponse {
             return ParticipantResponse(
                 id = dto.id.value,
                 name = dto.name,
-                availabilities = dto.availabilities.map { ParticipantAvailability.from(it.key, it.value) }
-            )
-        }
-    }
-}
-
-@Serializable
-data class ParticipantAvailability(
-    @Contextual
-    val eventCandidateId: UUID,
-    val availability: Availability
-) {
-    companion object {
-        fun from(eventCandidateId: EventCandidateId, availability: Availability): ParticipantAvailability {
-            return ParticipantAvailability(
-                eventCandidateId = eventCandidateId.value,
-                availability = availability
+                availabilities = dto.availabilities.mapKeys { it.key.value }
             )
         }
     }
