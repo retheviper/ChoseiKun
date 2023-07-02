@@ -5,7 +5,7 @@ import com.retheviper.choseikun.application.model.request.UpdateEventRequest
 import java.util.UUID
 
 data class Event(
-    val id: UUID,
+    val id: EventId,
     val name: String,
     val description: String,
     val candidates: List<EventCandidate>
@@ -13,14 +13,14 @@ data class Event(
     companion object {
         fun from(request: CreateEventRequest): Event {
             return Event(
-                id = UUID.randomUUID(),
+                id = EventId(UUID.randomUUID()),
                 name = request.name.trim(),
                 description = request.description.trim(),
                 candidates = request.eventCandidates.map { EventCandidate.from(it) }
             )
         }
 
-        fun from(id: UUID, request: UpdateEventRequest): Event {
+        fun from(id: EventId, request: UpdateEventRequest): Event {
             return Event(
                 id = id,
                 name = request.name.trim(),

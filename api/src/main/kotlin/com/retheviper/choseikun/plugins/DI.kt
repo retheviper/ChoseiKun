@@ -14,7 +14,7 @@ fun Application.configureDI() {
 
     val domainModule = module {
         single { EventService(get(), get()) }
-        single { ParticipantService(get()) }
+        single { ParticipantService(get(), get()) }
     }
 
     val infrastructureModule = module {

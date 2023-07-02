@@ -1,18 +1,49 @@
 package com.retheviper.choseikun.domain.service
 
 import com.retheviper.choseikun.domain.model.Event
+import com.retheviper.choseikun.domain.model.EventId
+import com.retheviper.choseikun.domain.model.EventParticipants
 import com.retheviper.choseikun.infrastructure.repository.EventRepository
 import com.retheviper.choseikun.infrastructure.repository.ParticipantRepository
-import java.util.UUID
+import io.ktor.server.plugins.NotFoundException
 
-class EventService(private val eventRepository: EventRepository) {
+class EventService(
+    private val eventRepository: EventRepository,
+    private val participantRepository: ParticipantRepository
+) {
 
-    fun createEvent(dto: Event) {
+    fun create(dto: Event): Event {
+        eventRepository.create(dto)
+        eventRepository.createCandidates(dto.id, dto.candidates)
+        return dto
     }
 
-    fun getEvent(id: UUID) {
+    fun find(id: EventId): EventParticipants {
+        val event = eventRepository.find(id) ?: throw NotFoundException("Event not found with id: $id")
+        val participants = participantRepository.findBy(id)
+        return EventParticipants(event, participants)
     }
 
-    fun updateEvent(dto: Event) {
+    fun update(dto: Event): EventParticipants {
+        val event = eventRepository.find(dto.id) ?: throw NotFoundException("Event not found with id: ${dto.id}")
+
+        eventRepository.update(dto)
+
+        val currentCandidates = event.candidates.toSet()
+        val newCandidates = dto.candidates.toSet()
+
+        (currentCandidates - newCandidates).let {
+            eventRepository.deleteCandidates(it.toList())
+        }
+
+        (newCandidates - currentCandidates).let {
+            eventRepository.createCandidates(dto.id, it.toList())
+        }
+
+        (currentCandidates intersect newCandidates).let {
+            eventRepository.updateCandidates(it.toList())
+        }
+
+        return find(dto.id)
     }
 }
