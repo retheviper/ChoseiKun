@@ -2,16 +2,24 @@ package com.retheviper.choseikun.plugins
 
 import com.retheviper.choseikun.domain.service.EventService
 import com.retheviper.choseikun.domain.service.ParticipantService
-import io.ktor.server.application.*
+import com.retheviper.choseikun.infrastructure.repository.EventRepository
+import com.retheviper.choseikun.infrastructure.repository.ParticipantRepository
 import io.ktor.server.application.Application
+import io.ktor.server.application.install
 import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
 import org.koin.logger.slf4jLogger
 
 fun Application.configureDI() {
+
     val domainModule = module {
-        single { EventService() }
-        single { ParticipantService() }
+        single { EventService(get(), get()) }
+        single { ParticipantService(get()) }
+    }
+
+    val infrastructureModule = module {
+        single { EventRepository() }
+        single { ParticipantRepository() }
     }
 
     install(Koin) {
@@ -19,8 +27,7 @@ fun Application.configureDI() {
         modules(
             listOf(
                 domainModule,
-//                infrastructureModule,
-//                applicationModule
+                infrastructureModule
             )
         )
     }

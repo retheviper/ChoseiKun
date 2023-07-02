@@ -1,4 +1,4 @@
-package com.retheviper.choseikun.web.model.response
+package com.retheviper.choseikun.application.model.response
 
 import com.retheviper.choseikun.domain.model.Availability
 import kotlinx.serialization.Contextual
@@ -17,12 +17,16 @@ data class EventResponse(
 @Serializable
 data class EventCandidateResponse(
     @Contextual
+    val id: UUID,
+    @Contextual
     val datetime: LocalDateTime,
     val participants: List<ParticipantResponse>
 )
 
 @Serializable
 data class ParticipantResponse(
+    @Contextual
+    val id: UUID,
     val name: String,
     val availability: Availability
 )

@@ -1,13 +1,18 @@
 package com.retheviper.choseikun.domain.service
 
-class EventService {
+import com.retheviper.choseikun.domain.model.Event
+import com.retheviper.choseikun.infrastructure.repository.EventRepository
+import com.retheviper.choseikun.infrastructure.repository.ParticipantRepository
+import java.util.UUID
 
-    fun createEvent() {
+class EventService(private val eventRepository: EventRepository) {
+
+    fun createEvent(dto: Event) {
     }
 
-    fun getEvent() {
+    fun getEvent(id: UUID) {
     }
 
-    fun updateEvent() {
+    fun updateEvent(dto: Event) {
     }
 }
