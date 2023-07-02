@@ -1,9 +1,10 @@
-package com.retheviper
+package com.retheviper.choseikun
 
-import com.retheviper.plugins.configureDatabases
-import com.retheviper.plugins.configureHTTP
-import com.retheviper.plugins.configureRouting
-import com.retheviper.plugins.configureSerialization
+import com.retheviper.choseikun.plugins.configureDI
+import com.retheviper.choseikun.plugins.configureDatabases
+import com.retheviper.choseikun.plugins.configureHTTP
+import com.retheviper.choseikun.plugins.configureRouting
+import com.retheviper.choseikun.plugins.configureSerialization
 import io.ktor.server.application.Application
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
@@ -17,5 +18,6 @@ fun Application.module() {
     configureHTTP()
     configureSerialization()
     configureDatabases()
+    configureDI()
     configureRouting()
 }

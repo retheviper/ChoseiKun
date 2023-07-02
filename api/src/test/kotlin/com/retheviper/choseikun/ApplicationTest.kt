@@ -1,4 +1,4 @@
-package com.retheviper
+package com.retheviper.choseikun
 
 import com.retheviper.plugins.configureRouting
 import io.ktor.client.request.get

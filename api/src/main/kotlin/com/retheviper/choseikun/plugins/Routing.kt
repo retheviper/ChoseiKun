@@ -1,4 +1,4 @@
-package com.retheviper.plugins
+package com.retheviper.choseikun.plugins
 
 import io.ktor.server.application.Application
 import io.ktor.server.application.call
