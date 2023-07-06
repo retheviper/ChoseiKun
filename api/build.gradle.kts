@@ -49,3 +49,9 @@ tasks {
         useJUnitPlatform()
     }
 }
+
+ktor {
+    fatJar {
+        archiveFileName.set("choseikun.jar")
+    }
+}
