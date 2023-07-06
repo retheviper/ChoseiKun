@@ -28,6 +28,15 @@ data class EventResponse(
                 participants = dto.participants.map { ParticipantResponse.from(it) }
             )
         }
+
+        fun from(dto: Event): EventResponse {
+            return EventResponse(
+                id = dto.id.value,
+                name = dto.name,
+                candidates = dto.candidates.map { EventCandidateResponse.from(it) },
+                participants = emptyList()
+            )
+        }
     }
 }
 

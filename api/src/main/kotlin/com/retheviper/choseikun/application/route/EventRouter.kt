@@ -24,6 +24,8 @@ fun Route.routeEvent() {
     route("/event") {
         post {
             val request = call.receive<CreateEventRequest>()
+            val dto = transaction { service.create(Event.from(request)) }
+            call.respond(EventResponse.from(dto))
         }
 
         route("/{id}") {
